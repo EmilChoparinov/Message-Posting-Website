@@ -30,6 +30,7 @@
     <div class="container">
         <div class="row ml-5">
             <form action="/signin/process" method="post">
+                {% csrf_token %}
                 <div class="form-group">
                     <h3 class="pb-4 pt-4">Sign in</h3>
                     <label for="email">Email Address:</label>
@@ -45,6 +46,11 @@
         <div class="row ml-5">
             <a href="/register" class="mt-3">Don't have an account? Register</a>
         </div>
+        {% if messages %} {% for message in messages %}
+        <div class="row ml-5 mt-1">
+            <p class="text-danger">{{message}}</p>
+        </div>
+        {% endfor %} {% endif %}
     </div>
 </body>
 

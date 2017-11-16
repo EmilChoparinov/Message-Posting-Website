@@ -14,11 +14,12 @@ class UsersManager(models.Manager):
     def addUser(self, data):
         """
         Add a user to the database
+        
         Args:
             data (request.POST): post data from a form
         
         Returns:
-            list: a list of responses from the manager, if any response is given; that data is rejected
+            list: a list of responses from the manager, if any response is given; the request is rejected
         """
         response = []
         if not data['first_name']:
@@ -58,6 +59,27 @@ class UsersManager(models.Manager):
             else:
                 new_user.level = 0
             new_user.save()
+        return response
+
+    def login(self, data):
+        """
+        Checks with the database if its okay to log this user into the requested account
+
+        Args:
+            data (request.POST): post data from a form
+        
+        Returns:
+            list: a list of responses from the manager, if any response is given; the request is rejected
+        """
+        response = []
+        if not data['email']:
+            response.append('Email cannot be left blank!')
+        elif len(Users.objects.filter(email=data['email'])) == 0:
+            response.append('Email is not registered!')
+        elif not bcrypt.checkpw(data['password'].encode(), Users.objects.get(email=data['email']).password.encode()):
+            response.append('Password is not correct!')
+        if not data['password']:
+            response.append('Password cannot be left blank!')
         return response
 
 

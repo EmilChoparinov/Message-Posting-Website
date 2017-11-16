@@ -13,6 +13,8 @@ def default(request):
         -Sign In
         -User Dashboard
     """
+    if 'id' in request.session:
+        return redirect('/dashboard')
     return render(request, 'lr_app/default.html')
 
 def signin(request):
@@ -29,7 +31,15 @@ def signin_p(request):
     """
     Route for processing sign in request
     """
-    return redirect(request, '/signin')
+    if request.method == 'POST':
+        response = Users.objects.login(request.POST)
+        if len(response) != 0:
+            for message in response:
+                messages.warning(request, message)
+            return redirect('/signin')
+        request.session['id'] = Users.objects.get(email=request.POST['email']).id
+        return redirect('/dashboard')
+    return redirect(request, '/')
 
 def register(request):
     """
@@ -52,4 +62,12 @@ def register_p(request):
                 messages.warning(request, message)
             return redirect('/register')
         return redirect('/dashboard')
+    return redirect('/')
+
+def signout(request):
+    """
+    Route for processing a logout request
+    """
+    for key in list(request.session.keys()):
+        del request.session[key]
     return redirect('/')

@@ -2,7 +2,7 @@
 from __future__ import unicode_literals
 
 from django.shortcuts import render, HttpResponse
-
+from ..lr_app.models import Users
 # Create your views here.
 def regular(request):
     """
@@ -26,4 +26,8 @@ def determinePage(request):
     """
     Route for processing which page they will see
     """
-    return HttpResponse('Admin or User check')
+    user = Users.objects.get(id=request.session['id'])
+    if user.level == 9:
+        return render(request, 'dash_app/admin.html')
+    else:
+        return HttpResponse('User')
