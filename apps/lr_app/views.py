@@ -1,8 +1,9 @@
 # -*- coding: utf-8 -*-
 from __future__ import unicode_literals
 
-from django.shortcuts import render, HttpResponse
-
+from django.shortcuts import render, HttpResponse, redirect
+from models import Users
+from django.contrib import messages
 # Create your views here.
 def default(request):
     """
@@ -28,7 +29,7 @@ def signin_p(request):
     """
     Route for processing sign in request
     """
-    return HttpResponse('Sign in request process')
+    return redirect(request, '/signin')
 
 def register(request):
     """
@@ -44,4 +45,11 @@ def register_p(request):
     """
     Route for processing register request
     """
-    return HttpResponse('Register request process')
+    if request.method == 'POST':
+        response = Users.objects.addUser(request.POST)
+        if len(response) != 0:
+            for message in response:
+                messages.warning(request, message)
+            return redirect('/register')
+        return redirect('/dashboard')
+    return redirect('/')

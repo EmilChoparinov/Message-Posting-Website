@@ -23,13 +23,14 @@
                         <a class="nav-link" href="/">Home</a>
                     </li>
                 </ul>
-                <a class="nav-link my-2 my-sm-0" href="/signin">Sign In</a>
+                <a class="nav-link my-2 my-sm-0" href="/signin">Register</a>
             </div>
         </div>
     </nav>
     <div class="container">
         <div class="row ml-5">
-            <form action="/signin/process" method="post">
+            <form action="/register/process" method="post">
+                {% csrf_token %}
                 <div class="form-group">
                     <h3 class="pb-4 pt-4">Register</h3>
                     <label for="email">Email Address:</label>
@@ -41,22 +42,27 @@
                 </div>
                 <div class="form-group">
                     <label for="last_name">Last Name:</label>
-                    <input type="text" name="name_last" class="form-control">
+                    <input type="text" name="last_name" class="form-control">
                 </div>
                 <div class="form-group">
                     <label for="password">Password:</label>
                     <input type="password" name="password" class="form-control">
                 </div>
                 <div class="form-group">
-                    <label for="confirm_password">Password:</label>
+                    <label for="confirm_password">Password Confirmation:</label>
                     <input type="password" name="confirm_password" class="form-control">
                 </div>
-                <input type="submit" value="Sign In" class="btn">
+                <input type="submit" value="Register" class="btn">
             </form>
         </div>
         <div class="row ml-5">
             <a href="/login" class="mt-3">Aready have an account? Login</a>
         </div>
+        {% if messages %} {% for message in messages %}
+        <div class="row ml-5 mt-1">
+            <p class="text-danger">{{message}}</p>
+        </div>
+        {% endfor %} {% endif %}
     </div>
 </body>
 
