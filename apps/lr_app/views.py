@@ -12,7 +12,7 @@ def default(request):
         -Sign In
         -User Dashboard
     """
-    return HttpResponse('Home Page')
+    return render(request, 'lr_app/default.html')
 
 def signin(request):
     """
@@ -22,7 +22,7 @@ def signin(request):
         - User Dashboard
         - Register
     """
-    return HttpResponse('Sign in page')
+    return render(request, 'lr_app/signin.html')
 
 def signin_p(request):
     """
@@ -38,7 +38,7 @@ def register(request):
         - Sign In
         - User Dashboard
     """
-    return HttpResponse('Register page')
+    return render(request, 'lr_app/register.html')
 
 def register_p(request):
     """
