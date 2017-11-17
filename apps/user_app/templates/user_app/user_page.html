@@ -63,16 +63,21 @@
             <form action="{{user.id}}/post/message" method="post">
                 {% csrf_token%}
                 <textarea name="message" class="form-control"></textarea>
-                <input type="submit" value="Post" class="btn mt-3 float-right bg-success text-white border border-dark">
+                <input type="submit" value="Post" class="d-block btn mt-3 float-right bg-success text-white border border-dark">
             </form>
         </div>
         {% if messages %} {% for message in messages %}
         <div class="row ml-5 mt-1">
             <p class="text-danger">{{message}}</p>
         </div>
-        {% endfor %} {% endif %}
-        <div class="container">
-
+        {%endfor%} {%endif%}
+        <div class="container mt-5">
+            {% for message in posts %}
+            {{message.user.first_name}}  wrote:
+            <div class="container border border-dark mt-2 mb-4">
+                {{message.message}}
+            </div>
+            {% endfor%}
         </div>
     </div>
 </body>

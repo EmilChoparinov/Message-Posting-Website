@@ -6,6 +6,7 @@ from django.shortcuts import render, HttpResponse, redirect
 from django.contrib import messages
 
 from ..lr_app.models import Users
+from ..msg_app.models import Messages
 # Create your views here.
 def add_new_user(request):
     """
@@ -92,5 +93,9 @@ def show_user(request, u_id):
         - Log off
         - To other users
     """
-    user = Users.objects.get(id=u_id)
-    return render(request, 'user_app/user_page.html', {'user': user})
+    u = Users.objects.get(id=u_id)
+    # Messages.objects.filter(user.id=u_id)
+    context = {
+        'user': Users.objects.get(id=u_id),
+    }
+    return render(request, 'user_app/user_page.html', context)

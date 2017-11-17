@@ -25,14 +25,16 @@ class MessagesManager(models.Manager):
         if not data['message']:
             response.append('Message cannot be empty!')
         if len(response) == 0:
-            Users.objects.get(id=u_id).messages.add(
-                Messages.objects.create(message=data['message'])
+            Messages.objects.create(
+                message = data['message'],
+                user = Users.objects.get(id=u_id)
             )
         return response
 
 class Messages(models.Model):
     message = models.TextField()
-    user = models.ForeignKey(Users, related_name='messages')
+    for_user = models.ForeignKey(Users, related_name='messages')
+    poster = models.ForeignKey(Users, related_name='posts')
     objects = MessagesManager()
 
 class Comments(models.Model):

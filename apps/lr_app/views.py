@@ -61,6 +61,7 @@ def register_p(request):
             for message in response:
                 messages.warning(request, message)
             return redirect('/register')
+        request.session['id'] = Users.objects.get(email=request.POST['email']).id
         return redirect('/dashboard')
     return redirect('/')
 
