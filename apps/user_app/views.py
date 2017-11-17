@@ -65,7 +65,10 @@ def edit_user_by_id(request, u_id):
         - Profile
         - Log off
     """
-    return render(request, 'user_app/admin_edit.html', {'user_id': u_id})
+    admin = Users.objects.get(id=request.session['id'])
+    if admin.level == 9:
+        return render(request, 'user_app/admin_edit.html', {'user_id': u_id})
+    return redirect('/dashboard')
 
 def edit_user_by_id_p(request, u_id):
     """
@@ -89,4 +92,5 @@ def show_user(request, u_id):
         - Log off
         - To other users
     """
-    return HttpResponse('User page ' + str(u_id))
+    user = Users.objects.get(id=u_id)
+    return render(request, 'user_app/user_page.html', {'user': user})

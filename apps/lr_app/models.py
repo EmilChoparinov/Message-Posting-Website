@@ -111,8 +111,9 @@ class UsersManager(models.Manager):
             if data['email']:
                 if not re.match(r'(^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+\.[a-zA-Z0-9-.]+$)', data['email']):
                     response.append('Email entered is invalid!')
-                elif Users.objects.filter(email=data['email']) != 0 and Users.objects.filter(email=data['email'])[0] != Users.objects.get(id=u_id).email:
-                    response.append('Email is already linked to another account!')
+                elif Users.objects.filter(email=data['email']) < 1:
+                    if Users.objects.filter(email=data['email'])[0] != Users.objects.get(id=u_id).email:
+                        response.append('Email is already linked to another account!')
                 else:
                     user.email = data['email']
             if 'level' in data:
