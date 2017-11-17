@@ -48,7 +48,13 @@ def edit_user_p(request):
     """
     Route for processing a user edit request
     """
-    return HttpResponse('edit self process')
+    if request.method == 'POST':    
+        response = Users.objects.change(request.POST, request.session['id'])
+        if len(response) != 0:
+            for message in response:
+                messages.warning(request, message)
+            return redirect('/users/edit')
+    return redirect('/users/show/' + str(request.session['id']))
 
 def edit_user_by_id(request, u_id):
     """
@@ -65,6 +71,7 @@ def edit_user_by_id_p(request, u_id):
     """
     Route for processing a user edit request by id
     """
+    
     return HttpResponse('process user by id info page ' + str(u_id))
 
 def show_user(request, u_id):

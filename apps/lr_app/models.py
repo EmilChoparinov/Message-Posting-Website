@@ -82,6 +82,58 @@ class UsersManager(models.Manager):
             response.append('Password cannot be left blank!')
         return response
 
+    def change(self, data, u_id):
+        """
+        Changes a users data that is currently inside the database
+
+        Args:
+            data (request.POST): post data from a form
+            u_id (int): user's unique id
+        
+        Returns:
+            list: a list of responses from the manager, if any response is given; the request is rejected
+        """
+        response = []
+        user = Users.objects.get(id=u_id)
+        if data['type'] == 'info':
+            print "*"*50
+            print data['type'] 
+            if data['first_name']:
+                if not re.match(r'^[a-zA-Z ]+$', data['first_name']):
+                    response.append('First name can only contain alpha characters!')
+                else:
+                    user.first_name = data['first_name']
+            
+            if data['last_name']:
+                if not re.match(r'^[a-zA-Z ]+$', data['last_name']):
+                    response.append('Last name can only contain alpha characters!')
+                else:
+                    user.last_name = data['last_name']
+
+            if data['email']:
+                if not re.match(r'(^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+\.[a-zA-Z0-9-.]+$)', data['email']):
+                    response.append('Email entered is invalid!')
+                elif Users.objects.filter(email=data['email']) != 0 and Users.objects.filter(email=data['email'])[0] != Users.objects.get(id=u_id).email:
+                    response.append('Email is already linked to another account!')
+                else:
+                    user.email = data['email']
+
+        elif data['type'] == 'password':
+            if not data['password']:
+                response.append('Password cannot be left empty!')
+            elif not re.match(r'^[a-zA-Z0-9]+$', data['password']):
+                response.append('Password can only contain aplha numeric characters!')
+            elif data['password'] != data['confirm_password']:
+                response.append('Passwords entered do not match!')
+            else:
+                user.password = bcrypt.hashpw(data['password'].encode(), bcrypt.gensalt())
+        elif data['type'] == 'description':
+            if not data['description']:
+                response.append('Description is empty!')
+            else:
+                user.desc = data['description']
+        user.save()
+        return response
 
 class Users(models.Model):
     first_name = models.CharField(max_length=255)
@@ -90,5 +142,6 @@ class Users(models.Model):
     password = models.CharField(max_length=255)
     updated_at = models.DateTimeField(auto_now=True)
     created_at = models.DateTimeField(auto_now_add=True)
+    desc = models.TextField()
     level = models.IntegerField()
     objects = UsersManager()
