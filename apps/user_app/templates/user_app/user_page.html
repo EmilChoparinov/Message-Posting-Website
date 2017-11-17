@@ -66,7 +66,12 @@
                 <input type="submit" value="Post" class="btn mt-3 float-right bg-success text-white border border-dark">
             </form>
         </div>
-        <div class="container mt-4">
+        {% if messages %} {% for message in messages %}
+        <div class="row ml-5 mt-1">
+            <p class="text-danger">{{message}}</p>
+        </div>
+        {% endfor %} {% endif %}
+        <div class="container">
 
         </div>
     </div>
