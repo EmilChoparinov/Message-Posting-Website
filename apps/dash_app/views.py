@@ -14,13 +14,16 @@ def regular(request):
         - New users
         - Log off
     """
-    return HttpResponse('Dashboard page')
+    context = {
+        'users': Users.objects.all()
+    }
+    return render(request, 'dash_app/user.html', context)
 
 def admin(request):
     """
     Renderer for admin dashboard
     """
-    return HttpResponse('Admin page')
+    return render(request, 'dash_app/admin.html')
 
 def determinePage(request):
     """
@@ -28,6 +31,6 @@ def determinePage(request):
     """
     user = Users.objects.get(id=request.session['id'])
     if user.level == 9:
-        return render(request, 'dash_app/admin.html')
+        return admin(request)
     else:
-        return HttpResponse('User')
+        return regular(request)
