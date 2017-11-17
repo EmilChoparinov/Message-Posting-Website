@@ -96,8 +96,6 @@ class UsersManager(models.Manager):
         response = []
         user = Users.objects.get(id=u_id)
         if data['type'] == 'info':
-            print "*"*50
-            print data['type'] 
             if data['first_name']:
                 if not re.match(r'^[a-zA-Z ]+$', data['first_name']):
                     response.append('First name can only contain alpha characters!')
@@ -117,6 +115,10 @@ class UsersManager(models.Manager):
                     response.append('Email is already linked to another account!')
                 else:
                     user.email = data['email']
+            if 'level' in data:
+                print "*"*50
+                print data['level']
+                user.level = int(data['level'])
 
         elif data['type'] == 'password':
             if not data['password']:

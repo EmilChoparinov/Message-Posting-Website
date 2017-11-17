@@ -65,14 +65,19 @@ def edit_user_by_id(request, u_id):
         - Profile
         - Log off
     """
-    return HttpResponse('edit user by id info page ' + str(u_id))
+    return render(request, 'user_app/admin_edit.html', {'user_id': u_id})
 
 def edit_user_by_id_p(request, u_id):
     """
     Route for processing a user edit request by id
     """
-    
-    return HttpResponse('process user by id info page ' + str(u_id))
+    if request.method == 'POST':    
+        response = Users.objects.change(request.POST, u_id)
+        if len(response) != 0:
+            for message in response:
+                messages.warning(request, message)
+            return redirect('/users/edit/' + str(u_id))
+    return redirect('/dashboard')
 
 def show_user(request, u_id):
     """
