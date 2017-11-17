@@ -42,7 +42,7 @@ def edit_user(request):
         - Profile
         - Log off
     """
-    return HttpResponse('edit user info page')
+    return render(request, 'user_app/self_edit.html')
 
 def edit_user_p(request):
     """

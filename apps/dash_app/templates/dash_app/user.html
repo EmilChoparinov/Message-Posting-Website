@@ -20,7 +20,10 @@
             <div class="collapse navbar-collapse" id="navbarTogglerDemo03">
                 <ul class="navbar-nav mr-auto mt-2 mt-lg-0">
                     <li class="nav-item active">
-                        <a class="nav-link" href="/">Home</a>
+                        <a class="nav-link" href="/dashboard">Dashboard</a>
+                    </li>
+                    <li class="nav-item active">
+                        <a class="nav-link" href="/users/show/{{request.session.id}}">Profile</a>
                     </li>
                 </ul>
                 <a class="nav-link my-2 my-sm-0" href="/logoff">Log off</a>
@@ -42,19 +45,19 @@
             </thead>
             <tbody>
                 {% for user in users %}
-                    <tr>
-                        <th scope="row">{{user.id}}</th>
-                        <td>
-                            <a href="/users/show/{{user.id}}">{{user.first_name}} {{user.last_name}}</a>
-                        </td>
-                        <td>{{user.email}}</td>
-                        <td>{{user.created_at}}</td>
-                        {% if user.level == 9%}
-                            <td>admin</td>
-                        {% else %}
-                            <td>normal</td>
-                        {% endif %}
-                    </tr>
+                <tr>
+                    <th scope="row">{{user.id}}</th>
+                    <td>
+                        <a href="/users/show/{{user.id}}">{{user.first_name}} {{user.last_name}}</a>
+                    </td>
+                    <td>{{user.email}}</td>
+                    <td>{{user.created_at}}</td>
+                    {% if user.level == 9%}
+                    <td>admin</td>
+                    {% else %}
+                    <td>normal</td>
+                    {% endif %}
+                </tr>
                 {% endfor %}
             </tbody>
         </table>
