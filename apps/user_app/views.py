@@ -1,8 +1,11 @@
 # -*- coding: utf-8 -*-
 from __future__ import unicode_literals
 
-from django.shortcuts import render, HttpResponse
+from django.shortcuts import render, HttpResponse, redirect
 
+from django.contrib import messages
+
+from ..lr_app.models import Users
 # Create your views here.
 def add_new_user(request):
     """
@@ -13,13 +16,22 @@ def add_new_user(request):
         - Profile
         - Log off
     """
-    return HttpResponse('add a new user page')
+    admin = Users.objects.get(id=request.session['id'])
+    if admin.level == 9:
+        return render(request, 'user_app/new.html')
+    return redirect('/dashboard')
 
 def add_new_user_p(request):
     """
     Route for processing a new user
     """
-    return HttpResponse('process a new user')
+    if request.method == 'POST':
+        response = Users.objects.addUser(request.POST)
+        if len(response) != 0:
+            for message in response:
+                messages.warning(request, message)
+            return redirect('/users/new')
+    return redirect('/dashboard')
 
 def edit_user(request):
     """

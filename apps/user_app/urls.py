@@ -9,5 +9,5 @@ urlpatterns = [
     url(r'^edit/(?P<u_id>\d+)$', views.edit_user_by_id),
     url(r'^edit/(?P<u_id>\d+)/process$', views.edit_user_by_id_p),
     url(r'^show/(?P<u_id>\d+)$', views.show_user),
-    url(r'^show/(?P<u_id>\d+)/post/', include('apps.msg_app.urls'))
+    url(r'^show/(?P<u_id>\d+)/post/', include('apps.msg_app.urls')),
 ]
