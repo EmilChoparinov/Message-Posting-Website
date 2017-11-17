@@ -23,7 +23,10 @@ def admin(request):
     """
     Renderer for admin dashboard
     """
-    return render(request, 'dash_app/admin.html')
+    context = {
+        'users': Users.objects.all()
+    }
+    return render(request, 'dash_app/admin.html', context)
 
 def determinePage(request):
     """
